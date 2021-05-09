@@ -13,7 +13,7 @@ require_once __DIR__ . '/colors.php';
                 return () => element.removeEventListener(event, callback);
             }
 
-            class DropDown extends HTMLElement {
+            class DropOld extends HTMLElement {
                 unsubscribes;
                 search_input;
 
@@ -69,7 +69,7 @@ require_once __DIR__ . '/colors.php';
                     if (!this.search_input) {
                         throw new Error('Cannot find input element ' + this.attributes.for.value
                             + ', please set a valid CSS selector in the for attribute (e.g. '
-                            + '<drop-down for="#input-id-goes-here">)');
+                            + '<drop-old for="#input-id-goes-here">)');
                     }
 
                     this.unsubscribes = [
@@ -83,7 +83,7 @@ require_once __DIR__ . '/colors.php';
                 }
             }
 
-            customElements.define('drop-down', DropDown);
+            customElements.define('drop-old', DropOld);
         </script>
 
         <style>
@@ -101,7 +101,7 @@ require_once __DIR__ . '/colors.php';
                 position: relative;
             }
 
-            drop-down {
+            drop-old {
                 position: absolute;
                 top: 25px;
                 left: 0px;
@@ -132,6 +132,8 @@ require_once __DIR__ . '/colors.php';
         <section>
         <h1>search dropdown</h1>
 
+        <hr />
+
         <br />
 
         <div class="dropdown-group">
@@ -151,8 +153,8 @@ require_once __DIR__ . '/colors.php';
                 </svg>
             </div>
 
-            <drop-down for='#search-input' id="search-results" style="display: none">
-            </drop-down>
+            <drop-old for='#search-input' id="search-results" style="display: none">
+            </drop-old>
         </div>
         </section>
     </body>

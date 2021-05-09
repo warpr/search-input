@@ -4,7 +4,7 @@ require_once __DIR__ . '/colors.php';
 
 function render_results($q) {
     ?>
-    <drop-down for='#search-input' id="search-results" style="display: block">
+    <drop-old for='#search-input' id="search-results" style="display: block">
     <ul>
         <?php
         $items = get_colors($q);
@@ -17,14 +17,14 @@ function render_results($q) {
         }
         ?>
     </ul>
-    </drop-down>
+    </drop-old>
     <?php
 }
 
 function render_dropdown_closed() {
     ?>
-    <drop-down for='#search-input' id="search-results" style="display: none">
-    </drop-down>
+    <drop-old for='#search-input' id="search-results" style="display: none">
+    </drop-old>
     <?php
 }
 
