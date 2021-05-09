@@ -8,13 +8,25 @@ require_once __DIR__ . '/colors.php';
         <script src="https://unpkg.com/htmx.org@1.3.3"></script>
 
         <script>
-function listen(element, event, callback) {
-    element.addEventListener(event, callback);
-    return () => element.removeEventListener(event, callback);
-}
+            function listen(element, event, callback) {
+                element.addEventListener(event, callback);
+                return () => element.removeEventListener(event, callback);
+            }
+
             class DropDown extends HTMLElement {
                 unsubscribes;
                 search_input;
+
+                closeDropdown() {
+                    document.getElementById('search-results').style.display = 'none';
+                }
+
+                openDropdown() {
+                    const results = document.getElementById('search-results');
+                    if (results.style.display !== 'block') {
+                        results.style.display = 'block';
+                    }
+                }
 
                 inputKeyDown(event) {
                     if (event.ctrlKey || event.isComposing || event.metaKey || event.shiftKey) {
@@ -27,7 +39,7 @@ function listen(element, event, callback) {
                     }
 
                     if (event.key == 'Escape') {
-                        console.log('close drop-down');
+                        this.closeDropdown();
                     }
                 }
 
@@ -39,6 +51,7 @@ function listen(element, event, callback) {
                     if (event.key == 'Escape') {
                         event.preventDefault();
                         this.search_input.focus();
+                        this.closeDropdown();
                     }
 
                     if (event.key == 'ArrowDown') {
@@ -74,15 +87,9 @@ function listen(element, event, callback) {
         </script>
 
         <style>
-            body {
-                background: #000;
-                color: #aaa;
-                font-family: Helvetica, Arial, sans-serif;
+            section {
+                padding: 2em;
             }
-
-            a:visited { color: #aaa; text-decoration: none; }
-            a:link { color: #aaa; text-decoration: none; }
-            a { color: #aaa; text-decoration: none; }
 
             * {
                 margin: 0;
@@ -90,19 +97,20 @@ function listen(element, event, callback) {
                 box-sizing: border-box;
             }
 
-            section { padding: 2em; }
-
-            .badge {
-                padding: 0 1em;
-                border-radius: 8px;
-                height: 16px;
+            .dropdown-group {
+                position: relative;
             }
 
-            ul { list-style-type: none; }
-            li:nth-of-type(2n+1) { background: #121212; }
-            li:nth-of-type(2n+2) { background: #232323; }
-            li span.result { flex: 1 0 auto; }
-            li span { padding: 0 1em; display: block; }
+            drop-down {
+                position: absolute;
+                top: 25px;
+                left: 0px;
+                display: block;
+                max-width: 30em;
+                border: 1px solid #888;
+                box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
+            }
+
             li {
                 padding: 0.5em;
                 display: flex;
@@ -111,55 +119,13 @@ function listen(element, event, callback) {
                 flex-flow: row wrap;
             }
 
-            li:focus-within {
-                background: gray;
-            }
+            ul { list-style-type: none; }
+            li:nth-of-type(2n+1) { background: #eee; }
+            li:nth-of-type(2n+2) { background: #ddd; }
+            li span.result { flex: 1 0 auto; }
+            li span { padding: 0 1em; display: block; }
 
-            li:focus-within span.result a { color: white; }
-
-            .loading-wrapper {
-                display: inline-block;
-                vertical-align: bottom;
-            }
-
-            drop-down {
-                display: block;
-                max-width: 30em;
-                border: 1px solid #888;
-            }
-
-            /* loading indicator */
-            #loading {
-                width: 24px;
-                height: 24px;
-                display: flex;
-                justify-content: center;
-                align-items: flex-end;
-                opacity: 0;
-                transition: opacity 300ms ease-in;
-            }
-            #loading.htmx-request {
-                opacity: 1;
-            }
-
-            #loading > div {
-                width: 20%;
-                height: 50%;
-                border: solid 1px black;
-                background-color: dodgerblue;
-            }
-
-            .pulse1 { animation: pulse 1s 0s ease infinite; }
-            .pulse2 { animation: pulse 1s 0.15s ease infinite; }
-            .pulse3 { animation: pulse 1s 0.30s ease infinite; }
-            .pulse4 { animation: pulse 1s 0.45s ease infinite; }
-
-            @keyframes pulse {
-                0% { height: 50%; }
-                5% { height: 80%; }
-                50% { height: 45% }
-                100% { height: 50%; }
-            }
+            li:focus-within { background: #bbb; }
         </style>
     </head>
     <body>
@@ -168,33 +134,26 @@ function listen(element, event, callback) {
 
         <br />
 
-        <input id='search-input' type="text" name="q" placeholder="Search..."
-            hx-get="query.php"
-            hx-trigger="keyup changed delay:500ms"
-            hx-target="#search-results"
-            hx-indicator="#loading" />
+        <div class="dropdown-group">
+            <input id='search-input' type="text" name="q" placeholder="Search..."
+                hx-get="query.php"
+                hx-trigger="keyup changed delay:500ms"
+                hx-target="#search-results"
+                hx-swap="outerHTML"
+                hx-indicator="#loading" />
 
-        <div class="loading-wrapper">
-            <div id="loading">
-                <div class='pulse1'></div>
-                <div class='pulse2'></div>
-                <div class='pulse3'></div>
-                <div class='pulse4'></div>
+            <div id="loading" class="loading-wrapper htmx-indicator" style="display: inline-block; vertical-align: bottom;">
+                <svg width="22px" height="22px" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
+                    <circle cx="50" cy="50" fill="none" stroke="#888888" stroke-width="8" r="32" stroke-dasharray="150 50">
+                        <animateTransform attributeName="transform" type="rotate" repeatCount="indefinite" dur="1s" values="0 50 50;360 50 50" keyTimes="0;1">
+                        </animateTransform>
+                    </circle>
+                </svg>
             </div>
+
+            <drop-down for='#search-input' id="search-results" style="display: none">
+            </drop-down>
         </div>
-
-        <br />
-        <br />
-
-        <drop-down for='#search-input' id="search-results">
-<ul>
-<?php
-foreach (get_colors('orange') as $key => $val) {
-    render_color($key, $val);
-}
-?>
-</ul>
-        </drop-down>
         </section>
     </body>
 </html>
