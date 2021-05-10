@@ -59,7 +59,7 @@ function render_color($name, $hex) {
     ?>
     <li>
     <span class="badge" style="background: <?= $hex ?>; color: <?= $fg ?>">color</span>
-    <span class="result"><a href="/select/<?= $hex ?>"><?= $name ?></a></span>
+    <span class="result"><a href="/select/?t=<?= time() . $hex ?>"><?= $name ?></a></span>
     <span class="subdued"><?= $hex ?></span>
     </li>
     <?php
