@@ -21,7 +21,7 @@ function render_results($q) {
 
 $q = $_GET['q'];
 
-sleep(2);
+// sleep(2);
 
 if (empty($q)) {
     echo '<ul></ul>';

@@ -66,11 +66,11 @@ require_once __DIR__ . '/colors.php';
                 search_input;
                 search_results;
                 request_in_flight;
+                current_query;
 
                 close_dropdown() {
                     if (this.search_results) {
                         this.search_results.style.display = 'none';
-                        this.search_results.innerHTML = '';
                     }
                 }
 
@@ -108,17 +108,19 @@ require_once __DIR__ . '/colors.php';
                 async query() {
                     const query = this.search_input.value;
 
-                    if (query === this.request_in_flight) {
-                        console.log('[INFO] already requesting', query);
+                    if (query === this.current_query) {
+                        console.log('[INFO] already requesting/requested', query);
                         return;
                     }
 
                     console.log('[INFO] request', query);
+                    this.current_query = query;
                     this.request_in_flight = query;
 
                     this.abort_query?.();
 
                     if (query === '') {
+                        this.current_query = null;
                         this.request_in_flight = null;
                         this.close_dropdown();
                         return;
@@ -166,6 +168,12 @@ require_once __DIR__ . '/colors.php';
 
                     if (event.key == 'ArrowDown' || event.key == 'Enter') {
                         event.preventDefault();
+                        if (!this.request_in_flight && this.current_query) {
+                            // we're not currently requesting search results, but we have
+                            // results for a previous query... so show those.
+                            this.open_dropdown();
+                        }
+
                         this.search_results.querySelector('li a')?.focus();
                     }
 
