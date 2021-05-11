@@ -12,7 +12,7 @@ function startsWith($haystack, $needle)
 }
 
 function get_colors($search = null) {
-    $colorsJson = file_get_contents("node_modules/css-color-names/css-color-names.json");
+    $colorsJson = file_get_contents(__DIR__ . "/css-color-names/css-color-names.json");
     $colors = json_decode($colorsJson, true);
     asort($colors);
 
