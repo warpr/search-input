@@ -1,0 +1,46 @@
+/**
+ *   This file is part of lûd, an opinionated browser based media player.
+ *   Copyright (C) 2020  Kuno Woudt <kuno@frob.nl>
+ *
+ *   This program is free software: you can redistribute it and/or modify
+ *   it under the terms of copyleft-next 0.3.1.  See copyleft-next-0.3.1.txt.
+ *
+ *   SPDX-License-Identifier: copyleft-next-0.3.1
+ */
+
+search-results,
+search-results * {
+    box-sizing: border-box;
+}
+
+search-results {
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    top: 25px;
+    left: 0px;
+    width: 30em;
+    border: 1px solid #888;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
+}
+
+search-results ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+search-results li {
+    padding: 0.5em;
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    flex-flow: row wrap;
+}
+
+search-results li:nth-of-type(2n+1) { background: #eee; }
+search-results li:nth-of-type(2n+2) { background: #ddd; }
+search-results li span.result { flex: 1 0 auto; }
+search-results li span { padding: 0 1em; display: block; }
+
+search-results li:focus-within { background: #bbb; }

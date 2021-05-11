@@ -1,6 +1,5 @@
 {
   "dependencies": {
-    "css-color-names": "^1.0.1",
-    "htmx": "0.0.2"
+    "css-color-names": "^1.0.1"
   }
 }
