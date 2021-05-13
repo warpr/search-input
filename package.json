@@ -1,0 +1,24 @@
+{
+  "name": "search-input",
+  "version": "0.1.0",
+  "description": "Incremental search as a web component",
+  "main": "search-input.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/warpr/search-input.git"
+  },
+  "keywords": [
+    "search",
+    "input",
+    "web-component"
+  ],
+  "author": "Kuno Woudt <kuno@frob.nl>",
+  "license": "copyleft-next-0.3.1",
+  "bugs": {
+    "url": "https://github.com/warpr/search-input/issues"
+  },
+  "homepage": "https://github.com/warpr/search-input#readme"
+}

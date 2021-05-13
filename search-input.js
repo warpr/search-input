@@ -130,7 +130,7 @@ class SearchInput extends HTMLElement {
 
         this.close_dropdown();
 
-        const url = 'query.php?q=' + query;
+        const url = this.getAttribute('action') + query;
         const body = await request(url, { signal: controller.signal });
 
         if (this.request_in_flight !== query) {
