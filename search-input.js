@@ -204,6 +204,7 @@ class SearchInput extends HTMLElement {
 
     connectedCallback() {
         this.search_input = document.createElement('input');
+        this.search_input.setAttribute('type', 'text');
         this.search_input.setAttribute('placeholder', this.getAttribute('placeholder'));
         this.prepend(this.search_input);
 
