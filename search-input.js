@@ -100,14 +100,6 @@ class SearchInput extends HTMLElement {
     async query() {
         const query = this.search_input.value;
 
-        if (query === this.current_query) {
-            if (this.loading_indicator) {
-                this.loading_indicator.style.opacity = 0;
-            }
-
-            return;
-        }
-
         this.current_query = query;
         this.request_in_flight = query;
 
@@ -152,12 +144,30 @@ class SearchInput extends HTMLElement {
         this.request_in_flight = null;
     }
 
-    input_keyup() {
-        if (this.loading_indicator) {
-            this.loading_indicator.style.opacity = 1;
+    query_changed() {
+        const query = this.search_input.value;
+
+        console.log('query changed?', query, this.current_query);
+
+        if (query === '' && !this.current_query) {
+            return false;
         }
 
-        this.debounced_query();
+        return query !== this.current_query;
+    }
+
+    input_keyup() {
+        if (this.query_changed()) {
+            if (this.loading_indicator) {
+                this.loading_indicator.style.opacity = 1;
+            }
+
+            this.debounced_query();
+        } else {
+            if (this.loading_indicator) {
+                this.loading_indicator.style.opacity = 0;
+            }
+        }
     }
 
     input_keydown() {

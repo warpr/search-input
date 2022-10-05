@@ -27,5 +27,13 @@
                 </div>
             </search-loading>
         </search-input>
+
+        <h2>unrelated focusable element</h2>
+        <section>
+          <button onclick="this.nextElementSibling.showModal()">Hello</button>
+          <dialog>
+            <h4>Hello, World!</h4>
+          </dialog>
+        </section>
     </body>
 </html>
