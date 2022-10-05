@@ -1,6 +1,6 @@
 {
   "name": "search-input",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Incremental search as a web component",
   "main": "search-input.js",
   "scripts": {
